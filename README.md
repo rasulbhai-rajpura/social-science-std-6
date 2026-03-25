@@ -11,7 +11,12 @@
 ### 🟢 Std 6 - Social Science
 👉 https://github.com/rasulbhai-rajpura/social-science-std-6
 
+🔗 🟠 Std 7 - Social Science
+
+👉 https://github.com/rasulbhai-rajpura/Social-Science-Std-7
+
 ---
+
 
 ### 🔵 Std 8 - Social Science
 👉 https://github.com/rasulbhai-rajpura/Social-Science-Std-8
