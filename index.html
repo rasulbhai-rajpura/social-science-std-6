@@ -2,295 +2,631 @@
 <html lang="gu">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>સામાજિક વિજ્ઞાન ક્વિઝ - રસુલભાઈ રાજપુરા</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>શ્રી પાનસડા અનુપમ પ્રાથમિક શાળા - ધોરણ 6 સામાજિક વિજ્ઞાન</title>
     <style>
-        /* ઓટો-એડજસ્ટ અને રિસ્પોન્સિવ ડિઝાઇન */
-        * { 
-            margin: 0; padding: 0; box-sizing: border-box; 
-            font-family: 'Noto Sans Gujarati', sans-serif; 
-            font-weight: 700;
+        :root {
+            --primary: #2c3e50;
+            --accent: #3498db;
+            --success: #27ae60;
+            --error: #e74c3c;
+            --main-bg: #FDF5E6;
+            --card-bg: #FFF9E3;
+            --header-bg: #E3F2FD;
+            --quiz-gradient: linear-gradient(180deg, #fce4ec 0%, #d1c4e9 100%);
         }
-        
-        body { 
-            background: linear-gradient(135deg, #1e3c72, #2a5298, #6a1b9a); 
-            min-height: 100vh; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            padding: 10px;
-            overflow-x: hidden;
-        }
-
-        .container { 
-            background: #f0f8ff; 
-            border-radius: clamp(15px, 3vw, 30px); 
-            box-shadow: 0 25px 60px rgba(0,0,0,0.5); 
-            padding: clamp(15px, 4vw, 40px); 
-            max-width: 1100px; 
-            width: 98%; 
-            border: 3px solid rgba(255, 255, 255, 0.7);
-            position: relative;
-            max-height: 96vh;
-            overflow-y: auto;
-        }
-        
-        .school-header { 
-            background: white; 
-            padding: clamp(10px, 2vw, 20px); 
-            border-radius: 15px; 
-            text-align: center; 
-            margin-bottom: clamp(15px, 3vw, 25px); 
-            border-bottom: 8px solid #2E7D32;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-        }
-        
-        .school-name { font-size: clamp(18px, 4vw, 32px); color: #b21f1f; }
-        .teacher-info { font-size: clamp(14px, 2.5vw, 22px); color: #1a2a6c; margin-top: 5px; display: block; }
-        
-        .lesson-title { 
-            text-align: center; color: #ff5722; margin-bottom: 20px; 
-            font-size: clamp(22px, 5vw, 42px); 
-            text-shadow: 2px 2px 0px #fff;
+        body, html {
+            margin: 0; padding: 0; height: 100%; width: 100%;
+            overflow: hidden; font-family: 'Segoe UI', Arial, sans-serif;
+            background-color: var(--main-bg);
+            display: flex; justify-content: center; align-items: center;
         }
 
-        .student-form, .quiz-container, .result-container { display: none; }
-        .active { display: block; animation: fadeIn 0.5s ease; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        
-        input { 
-            width: 100%; padding: clamp(12px, 2vw, 20px); border: 3px solid #cbd5e0; 
-            border-radius: 15px; font-size: clamp(16px, 2vw, 22px); outline: none; 
-            color: #1a2a6c; background: #fff; margin-bottom: 15px;
+        /* હોમ સ્ક્રીન સ્ટાઈલ */
+        #ui-layer {
+            position: absolute; width: 90%; max-width: 500px; 
+            background: var(--card-bg);
+            padding: 30px; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            text-align: center; z-index: 100; box-sizing: border-box; 
+            border: 2px solid #e6dbb9;
         }
-        
-        .start-btn { 
-            width: 100%; padding: clamp(15px, 3vw, 25px); 
-            background: linear-gradient(45deg, #4CAF50, #2E7D32); 
-            color: white; border: none; border-radius: 18px; 
-            font-size: clamp(18px, 3vw, 28px); cursor: pointer; 
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2); transition: 0.3s;
-            text-transform: uppercase;
-        }
-        .start-btn:hover { transform: scale(1.02); filter: brightness(1.1); }
 
-        .quiz-header { 
-            display: flex; justify-content: space-between; align-items: center;
-            background: #fff; padding: clamp(10px, 2vw, 15px); border-radius: 12px; 
-            color: #1a2a6c; border: 2px solid #e2e8f0; margin-bottom: 15px;
-            font-size: clamp(14px, 2vw, 22px);
-        }
+        .school-name { color: #8b4513; font-size: 24px; font-weight: bold; margin-bottom: 5px; }
+        .teacher-name { color: #5d4037; font-size: 16px; margin-bottom: 20px; border-bottom: 1px solid #d7ccc8; padding-bottom: 15px; }
         
-        .progress { background: #d1e3f8; height: clamp(10px, 1.5vw, 15px); border-radius: 10px; margin-bottom: 15px; overflow: hidden; }
-        .progress-bar { height: 100%; background: linear-gradient(90deg, #2196F3, #00BCD4); width: 0%; transition: 0.6s; }
-
-        .question-container { 
-            background: #fff; padding: clamp(15px, 4vw, 40px); border-radius: 20px; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05); margin-bottom: 20px;
-            border-left: clamp(8px, 1.2vw, 15px) solid #6a1b9a;
+        .input-group { margin-bottom: 15px; text-align: left; }
+        label { display: block; margin-bottom: 6px; font-weight: bold; color: var(--primary); font-size: 14px; }
+        input, select {
+            width: 100%; padding: 12px; border: 1px solid #ccc;
+            border-radius: 10px; font-size: 16px; box-sizing: border-box; outline: none; background: #fff;
         }
-        .question { font-size: clamp(20px, 3.5vw, 34px); color: #1a202c; margin-bottom: 20px; line-height: 1.4; }
-        
-        .options { display: grid; gap: clamp(10px, 2vw, 20px); grid-template-columns: 1fr; }
-        @media (min-width: 768px) { .options { grid-template-columns: 1fr 1fr; } }
 
-        .option { 
-            padding: clamp(12px, 2.5vw, 22px); background: #fff; border: 3px solid #edf2f7; 
-            border-radius: 15px; cursor: pointer; transition: 0.2s; 
-            font-size: clamp(16px, 2.2vw, 24px); color: #2d3748;
-            display: flex; align-items: center;
+        .btn-main {
+            width: 100%; padding: 15px; margin-top: 10px; border: none;
+            border-radius: 10px; font-size: 18px; font-weight: bold;
+            cursor: pointer; transition: 0.2s;
         }
-        .option:hover { background: #eef2f7; border-color: #2196F3; }
-        .option-label { color: #2196F3; margin-right: 15px; font-size: 1.2em; }
-
-        .option.correct { background: #00AD00 !important; border-color: #008A00 !important; color: white !important; }
-        .option.wrong { background: #FF0000 !important; border-color: #CC0000 !important; color: white !important; }
+        .btn-start { background: var(--success); color: white; }
+        .btn-admin { background: #6d4c41; color: white; margin-top: 15px; font-size: 14px; }
         
-        .timer-text { text-align: center; font-size: clamp(30px, 5vw, 55px); color: #ff5722; margin-bottom: 10px; }
-        .leaderboard-table { width: 100%; margin-top: 15px; border-collapse: collapse; font-size: clamp(14px, 2vw, 22px); }
-        .disabled { pointer-events: none; }
+        /* ફ્રન્ટ પેજ ક્રેડિટ */
+        .front-footer { margin-top: 20px; color: #5d4037; font-size: 14px; font-weight: bold; }
+
+        /* ક્વિઝ લેઆઉટ */
+      /* જૂના #quiz-overlay અને #quiz-card ની જગ્યાએ આ મૂકો */
+#quiz-overlay {
+    position: fixed; 
+    top: 0; 
+    left: 0; 
+    width: 100%; 
+    height: 100%;
+    background: var(--quiz-gradient);
+    display: none; 
+    flex-direction: column; 
+    align-items: center; 
+    justify-content: flex-start; /* કાર્ડ ઉપરથી શરૂ થશે, જેથી પ્રશ્ન કપાય નહીં */
+    z-index: 150;
+    overflow-y: auto; /* જો મોબાઈલ નાનો હોય તો આખા પેજ પર સ્ક્રોલ થશે */
+    padding: 20px 0; /* ઉપર-નીચે થોડી જગ્યા રાખવા */
+}
+
+#quiz-card {
+    width: 95%; 
+    max-width: 420px; 
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 30px; 
+    padding: 20px; 
+    box-sizing: border-box;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+    margin: 10px 0; /* કાર્ડની આજુબાજુ થોડી જગ્યા */
+}
+
+/* પ્રશ્ન બોક્સમાં પણ થોડો સુધારો (જો લિસ્ટમાં ન હોય તો ઉમેરી દેવો) */
+.question-box { 
+    font-size: 19px; 
+    font-weight: 800; 
+    color: #000; 
+    margin-bottom: 20px; 
+    min-height: auto; 
+    text-align: left; 
+    line-height: 1.4;
+}
+
+
+        .quiz-header { display: flex; justify-content: space-between; font-weight: bold; color: #4a148c; margin-bottom: 20px; }
+        .question-box { font-size: 20px; font-weight: 800; color: #000; margin-bottom: 25px; min-height: 80px; text-align: left; }
+
+        .opt-btn {
+            width: 100%; background: white; border: none; padding: 18px;
+            margin-bottom: 12px; border-radius: 15px; font-size: 18px;
+            font-weight: bold; text-align: left; cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05); transition: 0.2s;
+        }
+        .opt-btn.correct { background-color: var(--success) !important; color: white; }
+        .opt-btn.wrong { background-color: var(--error) !important; color: white; }
+
+        /* પ્રશ્ન સર્કલ્સ (Dots) */
+        .dots-grid {
+    display: flex;
+    flex-wrap: wrap; /* સર્કલ્સ લાઈન પૂરી થાય એટલે આપોઆપ નીચે જશે */
+    gap: 10px;
+    margin-top: 25px;
+    justify-content: center; /* બધા સર્કલ્સને વચ્ચે ગોઠવશે */
+    padding: 15px;
+    background: #f9f4ff;
+    border-radius: 20px;
+    max-height: 180px; /* 50 પ્રશ્નો માટે ફિક્સ ઊંચાઈ */
+    overflow-y: auto; /* બોક્સની અંદર જ સ્ક્રોલ થશે */
+    border: 1px solid #e1bee7;
+}
+
+.dot {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: white;
+    border: 1.5px solid #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: bold;
+    color: #7e57c2;
+    transition: 0.3s;
+    flex-shrink: 0;
+}
+
+        .dot.current { border: 2px solid #673ab7; transform: scale(1.1); }
+        .dot.is-correct { background: var(--success) !important; color: white; border: none; }
+        .dot.is-wrong { background: var(--error) !important; color: white; border: none; }
+
+        .credit-footer { margin-top: 20px; font-size: 12px; color: #1565c0; text-align: center; font-weight: bold; }
+
+        #admin-panel {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--header-bg); display: none;
+            flex-direction: column; align-items: center; justify-content: center; z-index: 200;
+        }
+        .admin-box { background: #fff; padding: 40px; border-radius: 20px; width: 85%; max-width: 400px; text-align: center; }
     </style>
 </head>
 <body>
-    <audio id="sound-correct" src="https://assets.mixkit.co/active_storage/sfx/2000/2000-preview.mp3"></audio>
-    <audio id="sound-wrong" src="https://assets.mixkit.co/active_storage/sfx/2019/2019-preview.mp3"></audio>
 
-    <div class="container">
-        <div class="school-header">
-            <div class="school-name">🏫 શ્રી પાનસડા અનુપમ પ્રાથમિક શાળા</div>
-            <div class="teacher-info">👨‍🏫 માર્ગદર્શક: રસુલભાઈ રાજપુરા</div>
-            <div class="creator-info">🎮 Game Created by: Rasulbhai Rajpura</div>
-        </div>
-
-        <div class="student-form active" id="studentForm">
-            <h1 class="lesson-title">પાઠ ૧: ચાલો ઇતિહાસ જાણીએ</h1> 
-            <input type="text" id="studentName" placeholder="👤 વિદ્યાર્થીનું પૂરું નામ" required>
-            <input type="text" id="studentRoll" placeholder="🆔 રોલ નંબર" required>
-            <input type="text" id="studentClass" placeholder="📚 તમારું ધોરણ લખો" required>
-            <button class="start-btn" onclick="startQuiz()">ચાલો શરૂ કરીએ! 🚀</button>
-        </div>
-
-        <div class="quiz-container" id="quizContainer">
-            <div class="quiz-header">
-                <div id="qCount">પ્રશ્ન: 0/0</div>
-                <div id="levelDisplay">Easy</div>
-                <div id="scoreDisplay">સ્કોર: 0</div>
-            </div>
-            <div class="progress"><div class="progress-bar" id="progressBar"></div></div>
-            <div class="timer-text">⏱️ <span id="timerText">20</span></div>
-            <div class="question-container">
-                <div class="question" id="question"></div>
-                <div id="options" class="options"></div>
-            </div>
-        </div>
-
-        <div class="result-container" id="resultContainer">
-            <h1 style="color: #2196F3; text-align:center;">🏆 સ્કોર કાર્ડ</h1>
-            <div style="text-align: center; margin: 20px 0; background: #fff; padding: clamp(15px, 3vw, 30px); border-radius: 20px; border: 3px dashed #4299e1;">
-                સ્કોર: <span id="finalScore" style="font-size: clamp(35px, 6vw, 50px); color: #b21f1f;"></span><br>
-                <span id="resultStatus" style="font-size: clamp(25px, 4vw, 35px);"></span>
-            </div>
-            <div id="resultDetails" style="background: #fff; padding: 15px; border-radius: 15px; border: 2px solid #e2e8f0; line-height: 1.8; color: #1a2a6c; font-size: clamp(16px, 2.5vw, 22px);"></div>
-            <h3 style="margin-top: 25px; color: #1a202c; border-bottom: 5px solid #2E7D32; padding-bottom: 5px;">📊 ટોપ 5 લીડરબોર્ડ</h3>
-            <table class="leaderboard-table"><tbody id="leaderboardBody"></tbody></table>
-            <button class="start-btn" onclick="location.reload()" style="background:#1e3c72; margin-top:20px;">🔄 ફરીથી રમો</button>
-        </div>
+<div id="ui-layer">
+    <div class="school-name">શ્રી પાનસડા અનુપમ પ્રાથમિક શાળા</div>
+    <div class="teacher-name">માર્ગદર્શક: શિક્ષક શ્રી રસુલભાઈ રાજપુરા</div>
+    
+    <div class="input-group"><label>વિદ્યાર્થીનું નામ:</label><input type="text" id="studentName" oplaceholder="તમારું નામ"></div>
+    <div class="input-group"><label>રોલ નંબર:</label><input type="number" id="rollNo" placeholder="રોલ નંબર"></div>
+    <div class="input-group"><label>પાઠ પસંદ કરો:</label>
+        <select id="chapter">
+            <option value="all">તમામ પાઠ (5,6,7,8)</option>
+            <option value="5">પાઠ 5: શાંતિ ની શોધમાં બુદ્ધ અને મહાવીર </option>
+            <option value="6">પાઠ 6: મૌર્ય યુગ ચંદ્રગુપ્ત અને સમ્રાટ અશોક</option>
+            <option value="7">પાઠ 7: ગુપ્તયુગ અને અન્ય શાસકો</option>
+            <option value="8">પાઠ 8: ભારત વર્ષની ભવ્યતા</option>
+              
+        </select>
     </div>
+    <button class="btn-main btn-start" onclick="startGame()">રમત શરૂ કરો</button>
+    <button class="btn-main btn-admin" onclick="showAdmin()">શિક્ષક લોગિન</button>
+    <div class="front-footer">ગેમ ક્રિએટેડ બાય: રસુલભાઈ રાજપુરા</div>
+</div>
 
-    <script>
-        // --- અપગ્રેડેડ સાઉન્ડ ફંક્શન ---
-        function playSound(type) {
-            const correctSound = document.getElementById('sound-correct');
-            const wrongSound = document.getElementById('sound-wrong');
-            
-            if (type === 'correct') {
-                correctSound.currentTime = 0;
-                correctSound.play().catch(e => console.log("Audio play failed"));
-            } else {
-                wrongSound.currentTime = 0;
-                wrongSound.play().catch(e => console.log("Audio play failed"));
-            }
-        }
+<div id="quiz-overlay">
+    <div id="quiz-card">
+        <div class="quiz-header">
+            <span id="q-info">પ્રશ્ન 1/50</span>
+            <span>⏱ <span id="timer-val">20</span></span>
+        </div>
+        <div class="question-box" id="q-text">પ્રશ્ન લોડ થઈ રહ્યો છે...</div>
+        <div id="options-container">
+            <button class="opt-btn" onclick="handleSelect('a')" id="btn-a"></button>
+            <button class="opt-btn" onclick="handleSelect('b')" id="btn-b"></button>
+            <button class="opt-btn" onclick="handleSelect('c')" id="btn-c"></button>
+            <button class="opt-btn" onclick="handleSelect('d')" id="btn-d"></button>
+        </div>
+        <div class="dots-grid" id="dots-area"></div>
+        <div class="credit-footer">RASULBHAI RAJPURA, Shree Pansada Anupam Primary School</div>
+    </div>
+</div>
 
-        const questionsData = {
-            easy: [
-                { q: "પ્રાચીન સમયમાં માનવી લખવા માટે કયા વૃક્ષની છાલનો ઉપયોગ કરતો હતો?", opts: ["વડ", "ભૂર્જ", "પીપળો", "આંબો"], ans: "ભૂર્જ" },
-                { q: "શિલાઓ અને પથ્થરો પર કોતરાયેલા લેખોને શું કહેવામાં આવે છે?", opts: ["અભિલેખો", "ભોજપત્રો", "તાડપત્રો", "દસ્તાવેજ"], ans: "અભિલેખો" },
-                { q: "ભારતમાં મળી આવેલા સૌથી જૂના સિક્કા કયા છે?", opts: ["સોનાના સિક્કા", "રૂપિયો", "પંચમાર્ક સિક્કા", "મોહર"], ans: "પંચમાર્ક સિક્કા" },
-                { q: "તાડપત્રો એટલે કયા વૃક્ષના પર્ણ પર લખાયેલી હસ્તપ્રતો?", opts: ["નાળિયેરી", "ખજૂરી", "તાડ", "સીતાફળ"], ans: "તાડ" },
-                { q: "ઇતિહાસ જાણવાના સ્ત્રોતોમાં નીચેનામાંથી કોનો સમાવેશ થતો નથી?", opts: ["અભિલેખો", "તાંમ્રપત્રો", "નવા વાહનો", "જૂના સિક્કા"], ans: "નવા વાહનો" },
-                { q: "તાંબાના પતરા ઉપર કોતરીને લખવામાં આવતા લખાણને શું કહેવાય?", opts: ["ભોજપત્ર", "તાંમ્રપત્ર", "શિલાલેખ", "ખતપત્ર"], ans: "તાંમ્રપત્ર" },
-                { q: "ગુજરાતમાં શ્રી હેમચંદ્રાચાર્ય જૈન જ્ઞાનભંડાર કયા શહેરમાં આવેલું છે?", opts: ["અમદાવાદ", "પાટણ", "વડોદરા", "ગાંધીનગર"], ans: "પાટણ" },
-                { q: "ઇતિહાસકારોના મતે 'India' શબ્દ કયા શબ્દ પરથી ઉતરી આવ્યો છે?", opts: ["Indus", "Indu", "Bharat", "Hindustan"], ans: "Indus" },
-                { q: "ઈસુ ખ્રિસ્તના જન્મ પછીના વર્ષોને કઈ રીતે ઓળખવામાં આવે છે?", opts: ["B.C.", "A.D.", "B.C.E.", "Year"], ans: "A.D." },
-                { q: "કચ્છમાં કયા સ્થળેથી હડપ્પીય સંસ્કૃતિના અવશેષો મળી આવ્યા છે?", opts: ["લોથલ", "રંગપુર", "ધોળાવીરા", "રોઝડી"], ans: "ધોળાવીરા" }
-            ],
-            medium: [
-                { q: "પ્રાચીન સમયમાં ઈરાનીઓ સિંધુ નદીના કયા કિનારાને 'ઇન્ડિયા' તરીકે ઓળખાવતા હતા?", opts: ["પશ્ચિમ કિનારાને", "દક્ષિણ કિનારાને", "પૂર્વ કિનારાને", "ઉત્તર કિનારાને"], ans: "પૂર્વ કિનારાને" },
-                { q: "ભારત નામનો માનવસમૂહ ઉત્તર-પશ્ચિમ ભારતમાં આવીને વસ્યો હતો, તેનો ઉલ્લેખ કયા વેદમાં છે?", opts: ["ઋગ્વેદ", "સામવેદ", "યજુર્વેદ", "અથર્વવેદ"], ans: "ઋગ્વેદ" },
-                { q: "અભિલેખાગારમાં નીચેનામાંથી કઈ વસ્તુ સાચવવામાં આવે છે?", opts: ["જૂના સિક્કા", "હસ્તપ્રતો અને દસ્તાવેજો", "ખેતીના ઓજારો", "આધુમિક રમકડાં"], ans: "હસ્તપ્રતો અને દસ્તાવેજો" },
-                { q: "સી.ઈ. (C.E.) ને બીજા કયા ટૂંકા નામે પણ ઓળખવામાં આવે છે?", opts: ["B.C.", "B.C.E.", "A.D.", "A.C."], ans: "A.D." },
-                { q: "ભૂર્જ નામના વિશિષ્ટ વૃક્ષો કયા પર્વતીય વિસ્તારમાં જોવા મળે છે?", opts: ["હિમાલય", "ગિરનાર", "સાપુતારા", "પાવાગઢ"], ans: "હિમાલય" },
-                { q: "કયા શાસકના શિલાલેખો ઇતિહાસ જાણવા માટે ખૂબ જ જાણીતા છે?", opts: ["ચંદ્રગુપ્ત મૌર્ય", "સમ્રાટ હર્ષવર્ધન", "સમ્રાટ અશોક", "મહારાણા પ્રતાપ"], ans: "સમ્રાટ અશોક" },
-                { q: "પ્રાચીન સિક્કાઓના અભ્યાસ પરથી આપણને કઈ માહિતી મળી શકે છે?", opts: ["માત્ર રાજાનું નામ", "માત્ર ધર્મની વિગત", "રાજા, ધર્મ અને સંસ્કૃતિ", "માત્ર લિપિની ઓળખ"], ans: "રાજા, ધર્મ અને સંસ્કૃતિ" },
-                { q: "ગ્રીસના લોકો સિંધુ નદીને કયા નામે ઓળખતા હતા?", opts: ["હિન્દોસ", "ઇન્ડિયા", "ભારત", "ઇન્ડસ"], ans: "ઇન્ડસ" },
-                { q: "વડોદરામાં કઈ સંસ્થા આવેલી છે જે પ્રાચીન સ્ત્રોતો સાચવે છે?", opts: ["L.D. ઇન્સ્ટિટ્યૂટ", "ઓરિએન્ટલ ઇન્સ્ટિટ્યૂટ", "જ્ઞાનભંડાર", "સાહિત્ય સભા"], ans: "ઓરિએન્ટલ ઇન્સ્ટિટ્યૂટ" },
-                { q: "ઇતિહાસ એટલે માનવ સમાજનો શું જાણવા માટેનું વિજ્ઞાન છે?", opts: ["ભવિષ્ય", "વર્તમાન", "અવકાશ", "ભૂતકાળ"], ans: "ભૂતકાળ" }
-            ],
-            hard: [
-                { q: "ઈરાનીઓ અને ગ્રીસના લોકો સિંધુ નદીથી પરિચિત હતા, તેઓ કેટલા વર્ષ પહેલાં આ પ્રદેશના સંપર્કમાં આવ્યા હતા?", opts: ["૨૦૦૦ વર્ષ પહેલાં", "૨૫૦૦ વર્ષ પહેલાં", "૩૦૦૦ વર્ષ પહેલાં", "૧૫૦૦ વર્ષ પહેલાં"], ans: "૨૫૦૦ વર્ષ પહેલાં" },
-                { q: "પ્રાચીન સમયમાં ઈરાનીઓ સિંધુ નદીને શું કહેતા હતા?", opts: ["ઇન્ડસ", "હિન્દોસ", "ઇન્ડિયા", "ભારત"], ans: "હિન્દોસ" },
-                { q: "બી.સી.ઈ. (B.C.E.) નું પૂરું નામ શું છે?", opts: ["Before Christ Era", "Before Century Era", "Before Common Era", "Before Current Era"], ans: "Before Common Era" },
-                { q: "પ્રાચીન સમયમાં મળી આવતા પંચમાર્ક સિક્કા કઈ રીતે બનાવવામાં આવતા હતા?", opts: ["બીબામાં દબાવીને", "સોનાને ઓગાળીને", "હાથથી કોતરીને", "રંગો ચડાવીને"], ans: "બીબામાં દબાવીને" },
-                { q: "નીચેનામાંથી કયા વિદેશી મુસાફરોએ ભારતની મુલાકાત લીધી હતી જેમના લખાણો ઇતિહાસના સ્ત્રોત છે?", opts: ["મેગેસ્થનીઝ અને પ્લિની", "ફાહિયાન અને હ્યુ-એન-ત્સાંગ", "ટોલેમી", "આપેલ તમામ"], ans: "આપેલ તમામ" },
-                { q: "ઘણીવાર A.D. ને બદલે કયો શબ્દ વપરાય છે?", opts: ["B.C.E.", "B.C.", "C.E.", "A.C.E."], ans: "C.E." },
-                { q: "સમ્રાટ અશોકના શિલાલેખો કઈ લિપિમાં લખાયેલા જોવા મળે છે?", opts: ["સંસ્કૃત", "બ્રાહ્મી", "હિન્દી", "ગુજરાતી"], ans: "બ્રાહ્મી" },
-                { q: "પુરાતત્વશાસ્ત્રીઓને અંગ્રેજીમાં કયા નામે ઓળખવામાં આવે છે?", opts: ["આર્કિયોલોજિસ્ટ", "હિસ્ટોરિયન", "જીયોગ્રાફર", "એન્થ્રોપોલોજિસ્ટ"], ans: "આર્કિયોલોજિસ્ટ" },
-                { q: "ઇતિહાસ જાણવા માટે તાંમ્રપત્રો પર રાજાઓ શું કોતરાવતા હતા?", opts: ["પોતાનું નામ અને વંશ", "વહીવટીતંત્ર અને દાનની વિગતો", "પોતાનો ધર્મ", "આપેલ તમામ"], ans: "આપેલ તમામ" },
-                { q: "કચ્છના ભચાઉ તાલુકામાં કયું હડપ્પીય સંસ્કૃતિનું નગર ત્રણ ભાગમાં વહેંચાયેલું મળી આવ્યું છે?", opts: ["લોથલ", "ધોળાવીરા", "રંગપુર", "રોઝડી"], ans: "ધોળાવીરા" }
-            ]
-        };
+<div id="admin-panel">
+    <div class="admin-box">
+        <h2>શિક્ષક એડમિન પેનલ</h2>
+        <input type="password" id="adminPass" placeholder="એડમિન પાસવર્ડ નાખો">
+        <div id="admin-actions" style="margin-top:20px; display:none;">
+            <p id="record-count"></p>
+            <button class="btn-main" style="background:#2ecc71; color:white;" onclick="downloadData()">Excel રિપોર્ટ ડાઉનલોડ</button>
+            <button class="btn-main" style="background:#f39c12; color:white;" onclick="clearData()">ડેટા સાફ કરો</button>
+        </div>
+        <button class="btn-main" style="background:#e74c3c; color:white; margin-top:10px;" onclick="hideAdmin()">પાછા જાઓ</button>
+    </div>
+</div>
 
-        let currentIdx = 0, score = 0, timer = 20, timerInt, allQ = [], student = {};
+<audio id="sound-correct" src="https://assets.mixkit.co/active_storage/sfx/2000/2000-preview.mp3"></audio>
+<audio id="sound-wrong" src="https://assets.mixkit.co/active_storage/sfx/2019/2019-preview.mp3"></audio>
 
-        function shuffle(array) {
-            for (let i = array.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [array[i], array[j]] = [array[j], array[i]];
-            }
-            return array;
-        }
+<script>
+// તમારા ઓરીજનલ કોડમાંથી લેવામાં આવેલી પ્રશ્ન બેંક
+const questionBank = [
+{ ch: 5, q: "ગૌતમ બુદ્ધનો જન્મ કયા સ્થળે થયો હતો?", a: "કપિલવસ્તુ", b: "લુમ્બિની", c: "સારનાથ", d: "બોધગયા", correct: "b" },
 
-        function startQuiz() {
-            student = { name: document.getElementById('studentName').value, roll: document.getElementById('studentRoll').value, class: document.getElementById('studentClass').value };
-            if (!student.name || !student.roll || !student.class) return alert("⚠️ બધી વિગતો ભરો!");
-            allQ = [...shuffle([...questionsData.easy]), ...shuffle([...questionsData.medium]), ...shuffle([...questionsData.hard])];
-            document.getElementById('studentForm').classList.remove('active');
-            document.getElementById('quizContainer').classList.add('active');
-            loadQ();
-        }
+{ ch: 5, q: "ગૌતમ બુદ્ધનું બાળપણનું નામ શું હતું?", a: "સિદ્ધાર્થ", b: "વર્ધમાન", c: "અશોક", d: "ચંદ્રગુપ્ત", correct: "a" },
 
-        function loadQ() {
-            const q = allQ[currentIdx];
-            const levelEl = document.getElementById('levelDisplay');
-            let levelTxt = currentIdx < 10 ? "Easy (1 Pt)" : (currentIdx < 20 ? "Medium (3 Pts)" : "Hard (6 Pts)");
-            levelEl.textContent = levelTxt;
-            levelEl.style.color = currentIdx < 10 ? "#2E7D32" : (currentIdx < 20 ? "#2196F3" : "#b21f1f");
+{ ch: 5, q: "બુદ્ધે કયા વૃક્ષ નીચે જ્ઞાન પ્રાપ્ત કર્યું?", a: "પીપળું", b: "વટવૃક્ષ", c: "બોધિવૃક્ષ", d: "આમળું", correct: "c" },
 
-            document.getElementById('qCount').textContent = `પ્રશ્ન: ${currentIdx + 1}/${allQ.length}`;
-            document.getElementById('question').textContent = q.q;
-            const optBox = document.getElementById('options');
-            optBox.innerHTML = ''; optBox.classList.remove('disabled');
-            
-            shuffle([...q.opts]).forEach((o, i) => {
-                const b = document.createElement('div');
-                b.className = 'option'; b.innerHTML = `<span class="option-label">${String.fromCharCode(65+i)}</span> ${o}`;
-                b.onclick = () => check(o, b, q.ans);
-                optBox.appendChild(b);
-            });
-            startTimer();
-        }
+{ ch: 5, q: "મહાવીર સ્વામી કયા ધર્મના સ્થાપક હતા?", a: "બૌદ્ધ ધર્મ", b: "હિન્દુ ધર્મ", c: "સીખ ધર્મ", d: "જૈન ધર્મ", correct: "d" },
 
-        function check(sel, btn, ans) {
-            clearInterval(timerInt);
-            document.getElementById('options').classList.add('disabled');
-            let pts = currentIdx < 10 ? 1 : (currentIdx < 20 ? 3 : 6);
-            if (sel === ans) { score += pts; if(btn) btn.classList.add('correct'); playSound('correct'); } 
-            else { if(btn) btn.classList.add('wrong'); playSound('wrong'); document.querySelectorAll('.option').forEach(ob => { if(ob.textContent.slice(3).trim() === ans.trim()) ob.classList.add('correct'); }); }
-            document.getElementById('scoreDisplay').textContent = `સ્કોર: ${score}`;
-            document.getElementById('progressBar').style.width = ((currentIdx + 1) / allQ.length) * 100 + '%';
-            setTimeout(() => { currentIdx++; if (currentIdx < allQ.length) loadQ(); else showResult(); }, 2000);
-        }
+{ ch: 5, q: "મહાવીર સ્વામીનો જન્મ કયા સ્થળે થયો હતો?", a: "પાવાપુરી", b: "વૈશાલી", c: "રાજગૃહ", d: "કોશલ", correct: "b" },
 
-        function startTimer() {
-            timer = 20; document.getElementById('timerText').textContent = timer;
-            clearInterval(timerInt);
-            timerInt = setInterval(() => { timer--; document.getElementById('timerText').textContent = timer; if (timer <= 0) { clearInterval(timerInt); check(null, null, allQ[currentIdx].ans); } }, 1000);
-        }
+{ ch: 5, q: "બુદ્ધે પ્રથમ ઉપદેશ કયા સ્થળે આપ્યો?", a: "બોધગયા", b: "લુમ્બિની", c: "સારનાથ", d: "કુશીનગર", correct: "c" },
 
-        function showResult() {
-            document.getElementById('quizContainer').classList.remove('active');
-            document.getElementById('resultContainer').classList.add('active');
-            document.getElementById('finalScore').textContent = score;
-            document.getElementById('resultStatus').innerHTML = score >= (allQ.length * 0.5) ? "પાસ ✅" : "ફેલ ❌";
-            document.getElementById('resultDetails').innerHTML = `નામ: ${student.name}<br>રોલ: ${student.roll}<br>ધોરણ: ${student.class}`;
-            saveAndShowLeader();
-        }
+{ ch: 5, q: "બુદ્ધના ઉપદેશને શું કહેવામાં આવે છે?", a: "ત્રિપિટક", b: "વેદ", c: "ઉપનિષદ", d: "પુરાણ", correct: "a" },
 
-        function saveAndShowLeader() {
-            let list = JSON.parse(localStorage.getItem('leaders')) || [];
-            list.push({ n: student.name, s: score });
-            list.sort((a, b) => b.s - a.s);
-            localStorage.setItem('leaders', JSON.stringify(list.slice(0, 5)));
-            const body = document.getElementById('leaderboardBody');
-            body.innerHTML = list.slice(0, 5).map((l, i) => {
-                let medal = i===0 ? "🥇 Gold" : (i===1 ? "🥈 Silver" : (i===2 ? "🥉 Bronze" : `#${i+1}`));
-                let clr = i===0 ? "#D4AF37" : (i===1 ? "#AAA9AD" : (i===2 ? "#CD7F32" : "#1a2a6c"));
-                return `<tr style="border-bottom:2px solid #eee; height:clamp(40px, 8vw, 60px);"><td style="color:${clr}; font-weight:900;">${medal}</td><td style="font-weight:bold;">${l.n}</td><td style="text-align:right; color:#2196F3;">${l.s} Pts</td></tr>`;
-            }).join('');
-        }
+{ ch: 5, q: "જૈન ધર્મમાં કુલ કેટલા તીર્થંકર હતા?", a: "22", b: "23", c: "24", d: "25", correct: "c" },
 
-        function clearLeaderboard() { if (confirm("ડેટા સાફ કરવો છે?")) { localStorage.removeItem('leaders'); location.reload(); } }
-    </script>
+{ ch: 5, q: "મહાવીર સ્વામી કેટલા ક્રમાંકના તીર્થંકર હતા?", a: "23મા", b: "24મા", c: "22મા", d: "25મા", correct: "b" },
+
+{ ch: 5, q: "બુદ્ધે કયા સિદ્ધાંતનો ઉપદેશ આપ્યો?", a: "અહિંસા", b: "મધ્યમ માર્ગ", c: "સત્ય", d: "અપરિગ્રહ", correct: "b" },
+
+{ ch: 5, q: "મહાવીર સ્વામીના પિતાનું નામ શું હતું?", a: "સિદ્ધાર્થ", b: "બિંધુસાર", c: "અશોક", d: "ચંદ્રગુપ્ત", correct: "a" },
+
+{ ch: 5, q: "મહાવીર સ્વામીની માતાનું નામ શું હતું?", a: "માયા", b: "ત્રિશલા", c: "યશોધરા", d: "કુંતિ", correct: "b" },
+
+{ ch: 5, q: "બુદ્ધના પિતાનું નામ શું હતું?", a: "શુદ્ધોધન", b: "સિદ્ધાર્થ", c: "અશોક", d: "બિંધુસાર", correct: "a" },
+
+{ ch: 5, q: "બુદ્ધની માતાનું નામ શું હતું?", a: "ત્રિશલા", b: "માયા", c: "યશોધરા", d: "ગૌરી", correct: "b" },
+
+{ ch: 5, q: "બુદ્ધે કઈ ભાષામાં ઉપદેશ આપ્યા હતા?", a: "સંસ્કૃત", b: "પાલી", c: "પ્રાકૃત", d: "હિન્દી", correct: "b" },
+
+{ ch: 5, q: "મહાવીર સ્વામી કેટલા વર્ષની ઉંમરે સંન્યાસી બન્યા?", a: "25", b: "30", c: "35", d: "40", correct: "b" },
+
+{ ch: 5, q: "બુદ્ધે કઈ વસ્તુનો ત્યાગ કર્યો?", a: "રાજ્ય", b: "સંપત્તિ", c: "કુટુંબ", d: "બધું", correct: "d" },
+
+{ ch: 5, q: "જૈન ધર્મમાં મુખ્ય સિદ્ધાંત કયો છે?", a: "અહિંસા", b: "સત્ય", c: "અપરિગ્રહ", d: "બધા", correct: "d" },
+
+{ ch: 5, q: "બુદ્ધના અનુયાયીઓને શું કહેવામાં આવે છે?", a: "જૈન", b: "ભિક્ષુ", c: "સાધુ", d: "યતિ", correct: "b" },
+
+{ ch: 5, q: "મહાવીર સ્વામીનું મૂળ નામ શું હતું?", a: "વર્ધમાન", b: "સિદ્ધાર્થ", c: "અશોક", d: "ચંદ્રગુપ્ત", correct: "a" },
+
+{ ch: 5, q: "બુદ્ધે જીવનના દુઃખોનું કારણ શું કહ્યું?", a: "લોભ", b: "મોહ", c: "તૃષ્ણા", d: "ક્રોધ", correct: "c" },
+
+{ ch: 5, q: "મહાવીર સ્વામીનું નિર્વાણ કયા સ્થળે થયું?", a: "પાવાપુરી", b: "રાજગૃહ", c: "વૈશાલી", d: "કોશલ", correct: "a" },
+
+{ ch: 5, q: "બુદ્ધનું નિર્વાણ કયા સ્થળે થયું?", a: "સારનાથ", b: "કુશીનગર", c: "લુમ્બિની", d: "બોધગયા", correct: "b" },
+
+{ ch: 5, q: "બુદ્ધે કયા પ્રકારનું જીવન અપનાવવાનું કહ્યું?", a: "ભોગવિલાસ", b: "કઠોર તપ", c: "મધ્યમ માર્ગ", d: "રાજસિક જીવન", correct: "c" },
+
+{ ch: 5, q: "જૈન ધર્મમાં આત્માને શું માનવામાં આવે છે?", a: "અનંત", b: "નાશવાન", c: "અસ્થિર", d: "નથી", correct: "a" },
+
+{ ch: 5, q: "બુદ્ધના ઉપદેશો કયા ગ્રંથમાં છે?", a: "ત્રિપિટક", b: "વેદ", c: "પુરાણ", d: "ગીતા", correct: "a" },
+
+{ ch: 5, q: "મહાવીર સ્વામી કયા વંશના હતા?", a: "ક્ષત્રિય", b: "બ્રાહ્મણ", c: "વૈશ્ય", d: "શૂદ્ર", correct: "a" },
+
+{ ch: 5, q: "બુદ્ધે કઈ રીતના જીવનનો વિરોધ કર્યો?", a: "ભોગવિલાસ", b: "કઠોર તપ", c: "બન્ને", d: "કોઈ નહીં", correct: "c" },
+
+{ ch: 5, q: "મહાવીર સ્વામીના ઉપદેશ કઈ ભાષામાં હતા?", a: "સંસ્કૃત", b: "પ્રાકૃત", c: "પાલી", d: "હિન્દી", correct: "b" },
+
+{ ch: 5, q: "બુદ્ધના ધર્મને શું કહે છે?", a: "જૈન ધર્મ", b: "બૌદ્ધ ધર્મ", c: "હિન્દુ ધર્મ", d: "સીખ ધર્મ", correct: "b" },
+
+{ ch: 5, q: "મહાવીર સ્વામી કઈ વસ્તુ પર ભાર આપતા હતા?", a: "અહિંસા", b: "સત્ય", c: "અપરિગ્રહ", d: "બધા", correct: "d" },
+
+{ ch: 5, q: "બુદ્ધના જીવનમાં ચાર દર્શન શું છે?", a: "વૃદ્ધ, બીમાર, મૃતદેહ, સંન્યાસી", b: "રાજા, પ્રજા, સંત, યોદ્ધા", c: "બાળક, યુવાન, વૃદ્ધ, સંન્યાસી", d: "માતા, પિતા, ગુરુ, મિત્ર", correct: "a" },
+
+{ ch: 5, q: "મહાવીર સ્વામી કેટલા વર્ષ સુધી તપસ્યા કરી?", a: "10", b: "12", c: "14", d: "16", correct: "b" },
+
+{ ch: 5, q: "બુદ્ધને જ્ઞાન પ્રાપ્ત થયું ત્યારે તેમની ઉંમર કેટલી હતી?", a: "29", b: "35", c: "40", d: "45", correct: "b" },
+
+{ ch: 5, q: "જૈન ધર્મમાં મુક્તિને શું કહે છે?", a: "મોક્ષ", b: "નિર્વાણ", c: "સ્વર્ગ", d: "મુક્તિ", correct: "a" },
+
+{ ch: 5, q: "બુદ્ધે દુઃખ નિવારણ માટે શું જણાવ્યું?", a: "અષ્ટાંગિક માર્ગ", b: "યોગ", c: "યજ્ઞ", d: "પૂજા", correct: "a" },
+
+{ ch: 5, q: "મહાવીર સ્વામીના અનુયાયીઓને શું કહે છે?", a: "ભિક્ષુ", b: "જૈન", c: "સાધુ", d: "યતિ", correct: "b" },
+
+{ ch: 5, q: "બુદ્ધનો જન્મ કયા વંશમાં થયો?", a: "શાક્ય", b: "મૌર્ય", c: "ગુપ્ત", d: "નંદ", correct: "a" },
+
+{ ch: 5, q: "મહાવીર સ્વામીનું બીજું નામ શું હતું?", a: "વર્ધમાન", b: "સિદ્ધાર્થ", c: "અશોક", d: "ચંદ્રગુપ્ત", correct: "a" },
+
+{ ch: 5, q: "બુદ્ધના મુખ્ય ઉપદેશોમાં શું સમાવેશ થાય છે?", a: "ચાર આર્ય સત્ય", b: "અષ્ટાંગિક માર્ગ", c: "મધ્યમ માર્ગ", d: "બધા", correct: "d" },
+
+{ ch: 5, q: "જૈન ધર્મમાં અહિંસા શું સૂચવે છે?", a: "કોઈને નુકસાન ન કરવું", b: "સત્ય બોલવું", c: "ચોરી ન કરવી", d: "સંયમ રાખવો", correct: "a" },
+
+{ ch: 5, q: "બુદ્ધે જીવનમાં શું ટાળવાનું કહ્યું?", a: "અતિશય ભોગ", b: "અતિશય તપ", c: "બન્ને", d: "કોઈ નહીં", correct: "c" },
+
+{ ch: 5, q: "મહાવીર સ્વામીના ધર્મમાં કેટલા મુખ્ય વ્રત છે?", a: "3", b: "4", c: "5", d: "6", correct: "c" },
+
+{ ch: 5, q: "બુદ્ધના ઉપદેશ કઈ રીતે ફેલાયા?", a: "મૌખિક રીતે", b: "લખિત રીતે", c: "યુદ્ધ દ્વારા", d: "રાજાઓ દ્વારા", correct: "a" },
+
+{ ch: 5, q: "મહાવીર સ્વામી કયા સમયમાં જીવ્યા?", a: "ઈ.સ.પૂર્વ 6મી સદી", b: "ઈ.સ.પૂર્વ 4મી સદી", c: "ઈ.સ. 1લી સદી", d: "ઈ.સ. 2મી સદી", correct: "a" },
+
+{ ch: 5, q: "બુદ્ધના ધર્મમાં સંઘ શું છે?", a: "સમૂહ", b: "રાજ્ય", c: "મંદિર", d: "પુસ્તક", correct: "a" },
+
+{ ch: 5, q: "જૈન ધર્મમાં તપસ્યા શા માટે કરવામાં આવે છે?", a: "મોક્ષ માટે", b: "ધન માટે", c: "યશ માટે", d: "શક્તિ માટે", correct: "a" },
+
+{ ch: 5, q: "બુદ્ધના અનુયાયી સ્ત્રીઓને શું કહેવામાં આવે છે?", a: "ભિક્ષુણી", b: "સાધ્વી", c: "યતિ", d: "જૈન", correct: "a" },
+
+{ ch: 5, q: "મહાવીર સ્વામીના જીવનનો મુખ્ય સંદેશ શું હતો?", a: "અહિંસા", b: "સત્ય", c: "અપરિગ્રહ", d: "બધા", correct: "d" },
+{ ch: 6, q: "મૌર્યવંશની સ્થાપના કોણે કરી હતી?", a: "બિંદુસાર", b: "ચંદ્રગુપ્ત મૌર્ય", c: "અશોક", d: "ધનનંદ", correct: "b" },
+
+{ ch: 6, q: "ચંદ્રગુપ્ત મૌર્યએ કયા ગ્રીક રાજાને હરાવ્યો હતો?", a: "સેલ્યુકસ નિકેટર", b: "એલેક્ઝાન્ડર", c: "એન્ટિઓકસ", d: "મેગેસ્થનીઝ", correct: "a" },
+
+{ ch: 6, q: "ચાણક્ય દ્વારા લખાયેલું પ્રસિદ્ધ પુસ્તક કયું છે?", a: "મુદ્રારાક્ષસ", b: "ઇન્ડિકા", c: "અર્થશાસ્ત્ર", d: "રાજતરંગિણી", correct: "c" },
+
+{ ch: 6, q: "મેગેસ્થનીઝ કોના દરબારમાં રાજદૂત તરીકે આવ્યો હતો?", a: "બિંબિસાર", b: "અશોક", c: "ચંદ્રગુપ્ત મૌર્ય", d: "બિંદુસાર", correct: "c" },
+
+{ ch: 6, q: "ચંદ્રગુપ્ત મૌર્યએ જીવનનો અંતિમ સમય કયા સ્થળે વિતાવ્યો હતો?", a: "પાટલીપુત્ર", b: "ઉજ્જૈન", c: "તક્ષશિલા", d: "શ્રવણબેલગોડા", correct: "d" },
+
+{ ch: 6, q: "ચંદ્રગુપ્ત મૌર્યએ કયો ધર્મ અંગીકાર કર્યો હતો?", a: "બૌદ્ધ ધર્મ", b: "જૈન ધર્મ", c: "વૈદિક ધર્મ", d: "શૈવ ધર્મ", correct: "b" },
+
+{ ch: 6, q: "બિંદુસારના શાસનકાળ દરમિયાન કયા સ્થળે બળવો થયો હતો?", a: "તક્ષશિલા", b: "અવંતી", c: "કલિંગ", d: "સુવર્ણગીરી", correct: "a" },
+
+{ ch: 6, q: "સમ્રાટ અશોકે કયા યુદ્ધ પછી હૃદય પરિવર્તન કર્યું હતું?", a: "પાણીપતનું યુદ્ધ", b: "કલિંગનું યુદ્ધ", c: "હલદીઘાટીનું યુદ્ધ", d: "બક્સરનું યુદ્ધ", correct: "b" },
+
+{ ch: 6, q: "અશોકના શિલાલેખો મોટેભાગે કઈ લિપિમાં કોતરાયેલા છે?", a: "દેવનાગરી", b: "ગુજરાતી", c: "બ્રાહ્મી", d: "પાલિ", correct: "c" },
+
+{ ch: 6, q: "કલિંગ હાલના કયા રાજ્યમાં આવેલું છે?", a: "બિહાર", b: "ઓડિશા", c: "મધ્યપ્રદેશ", d: "તામિલનાડુ", correct: "b" },
+
+{ ch: 6, q: "અશોકે બૌદ્ધ ધર્મના પ્રચાર માટે પુત્ર મહેન્દ્રને ક્યાં મોકલ્યા હતા?", a: "ચીન", b: "જાપાન", c: "શ્રીલંકા", d: "નેપાળ", correct: "c" },
+
+{ ch: 6, q: "મૌર્ય સામ્રાજ્યની રાજધાની કઈ હતી?", a: "તક્ષશિલા", b: "પાટલીપુત્ર", c: "કાશી", d: "ગિરનાર", correct: "b" },
+
+{ ch: 6, q: "ચંદ્રગુપ્ત મૌર્યને મૌર્યવંશની સ્થાપનામાં કોણે મદદ કરી હતી?", a: "વિષ્ણુગુપ્ત", b: "રાધાગુપ્ત", c: "બ્રહ્મગુપ્ત", d: "ઉપગુપ્ત", correct: "a" },
+
+{ ch: 6, q: "અશોકના કયા શિલાલેખમાં કલિંગના યુદ્ધનું વર્ણન છે?", a: "9મા", b: "11મા", c: "13મા", d: "15મા", correct: "c" },
+
+{ ch: 6, q: "મૌર્યયુગમાં ખેતી વિભાગના વડાને શું કહેવામાં આવતું?", a: "પણ્યાધ્યક્ષ", b: "સીતાધ્યક્ષ", c: "સંસ્થાધ્યક્ષ", d: "અક્ષપટલ", correct: "b" },
+
+{ ch: 6, q: "બિંદુસારે અશોકની નિમણૂક કયા પ્રદેશના રાષ્ટ્રીય તરીકે કરી હતી?", a: "તક્ષશિલા", b: "પાટલીપુત્ર", c: "અવંતી", d: "ગિરનાર", correct: "c" },
+
+{ ch: 6, q: "જૂનાગઢનો શિલાલેખ કયા પર્વતની તળેટીમાં આવેલો છે?", a: "શેત્રુંજય", b: "ચોટીલા", c: "ગિરનાર", d: "પાવાગઢ", correct: "c" },
+
+{ ch: 6, q: "મૌર્ય વંશનો અંતિમ રાજા કોણ હતો?", a: "બૃહદ્રથ", b: "સંપ્રતિ", c: "દેવવર્મન", d: "શાલિસુક", correct: "a" },
+
+{ ch: 6, q: "ચાણક્યનું બીજું નામ શું હતું?", a: "કૌટિલ્ય", b: "સ્કંદગુપ્ત", c: "સમુદ્રગુપ્ત", d: "કુમારગુપ્ત", correct: "a" },
+
+{ ch: 6, q: "અશોકે કયા બૌદ્ધ સાધુના ઉપદેશથી શસ્ત્રત્યાગ કર્યો હતો?", a: "ભદ્રબાહુ", b: "ઉપગુપ્ત", c: "આનંદ", d: "ગૌતમ બુદ્ધ", correct: "b" },
+
+{ ch: 6, q: "ગ્રીક રાજદૂત મેગેસ્થનીઝે કયું પુસ્તક લખ્યું હતું?", a: "પંચતંત્ર", b: "ઇન્ડિકા", c: "હર્ષચરિત", d: "કાદંબરી", correct: "b" },
+
+{ ch: 6, q: "જૂનાગઢમાં સુદર્શન તળાવનું નિર્માણ કોણે કરાવ્યું હતું?", a: "પુષ્યગુપ્ત", b: "તુષાસ્પ", c: "ચક્રપાલિત", d: "રુદ્રદામા", correct: "a" },
+
+{ ch: 6, q: "મૌર્યકાળમાં વહીવટીતંત્રના મુખ્ય કેટલા અંગો હતા?", a: "બે", b: "ત્રણ", c: "ચાર", d: "પાંચ", correct: "b" },
+
+{ ch: 6, q: "અશોકના મોટાભાગના અભિલેખોની ભાષા કઈ હતી?", a: "સંસ્કૃત", b: "પ્રાકૃત", c: "હિન્દી", d: "અંગ્રેજી", correct: "b" },
+
+{ ch: 6, q: "ચંદ્રગુપ્તે કયા જૈન મુનિ પાસે દીક્ષા લીધી હતી?", a: "સ્થૂલીભદ્ર", b: "હેમચંદ્રાચાર્ય", c: "ભદ્રબાહુ", d: "ગૌતમ સ્વામી", correct: "c" },
+
+{ ch: 6, q: "મૌર્ય સામ્રાજ્યમાં ન્યાયતંત્રના સર્વોચ્ચ વડા કોણ હતા?", a: "પ્રદેશી", b: "રાજા", c: "મહામાત્ર", d: "રાજુક", correct: "b" },
+
+{ ch: 6, q: "સારનાથનો સ્તંભ કોણે બંધાવ્યો હતો?", a: "ચંદ્રગુપ્ત", b: "બિંદુસાર", c: "અશોક", d: "દશરથ", correct: "c" },
+
+{ ch: 6, q: "ગિરનારના શિલાલેખમાં કયા રાજાનો ઉલ્લેખ જોવા મળતો નથી?", a: "ચંદ્રગુપ્ત મૌર્ય", b: "અશોક", c: "રુદ્રદામા", d: "બિંબિસાર", correct: "d" },
+
+{ ch: 6, q: "અશોકે બૌદ્ધ ધર્મના પ્રચાર માટે કોની નિમણૂક કરી હતી?", a: "ધર્મ મહામાત્ર", b: "ન્યાય મહામાત્ર", c: "રાજ મહામાત્ર", d: "સેના મહામાત્ર", correct: "a" },
+
+{ ch: 6, q: "ચંદ્રગુપ્તે સત્તા મેળવવા માટે કયા વંશના રાજાનો નાશ કર્યો હતો?", a: "હર્યક વંશ", b: "નંદ વંશ", c: "શિશુનાગ વંશ", d: "કણ્વ વંશ", correct: "b" },
+
+{ ch: 6, q: "મૌર્ય વંશની જાણકારી મેળવવા માટે કયું સાધન ઉપયોગી નથી?", a: "અર્થશાસ્ત્ર", b: "ઇન્ડિકા", c: "દીપવંશ", d: "બાબરનામા", correct: "d" },
+
+{ ch: 6, q: "મૌર્યયુગમાં સંદેશાવ્યવહાર માટે કયો માર્ગ જાણીતો હતો?", a: "ગ્રાન્ડ ટ્રંક રોડ", b: "રેશમ માર્ગ", c: "દક્ષિણ પથ", d: "પશ્ચિમ પથ", correct: "a" },
+
+{ ch: 6, q: "અશોકના પિતાનું નામ શું હતું?", a: "ચંદ્રગુપ્ત", b: "બિંદુસાર", c: "અજાતશત્રુ", d: "શિશુનાગ", correct: "b" },
+
+{ ch: 6, q: "મૌર્ય સામ્રાજ્યમાં પ્રાંતના વડાને શું કહેવાતું?", a: "રાષ્ટ્રીય", b: "ગોપ", c: "સ્થાનિક", d: "ગ્રામણી", correct: "a" },
+
+{ ch: 6, q: "અશોકે કેટલીમી બૌદ્ધ ધર્મ પરિષદ બોલાવી હતી?", a: "પહેલી", b: "બીજી", c: "ત્રીજી", d: "ચોથી", correct: "c" },
+
+{ ch: 6, q: "અશોકે ત્રીજી બૌદ્ધ પરિષદ ક્યાં બોલાવી હતી?", a: "વૈશાલી", b: "રાજગૃહ", c: "પાટલીપુત્ર", d: "કાશ્મીર", correct: "c" },
+
+{ ch: 6, q: "મૌર્યકાળમાં વેપારના વડાને શું કહેવામાં આવતું?", a: "સીતાધ્યક્ષ", b: "પણ્યાધ્યક્ષ", c: "પૌતવાધ્યક્ષ", d: "શુલ્કાધ્યક્ષ", correct: "b" },
+
+{ ch: 6, q: "ગ્રાન્ડ ટ્રંક રોડનું પુનઃનિર્માણ કોણે કરાવ્યું હતું?", a: "અશોક", b: "શેરશાહ સૂરી", c: "અકબર", d: "શિવાજી", correct: "b" },
+
+{ ch: 6, q: "સારનાથના સ્તંભ પર કેટલા સિંહોની આકૃતિ છે?", a: "બે", b: "ત્રણ", c: "ચાર", d: "પાંચ", correct: "c" },
+
+{ ch: 6, q: "ભારતનું રાષ્ટ્રીય ચિન્હ ક્યાંથી લેવામાં આવ્યું છે?", a: "ગિરનાર સ્તંભ", b: "સારનાથ સ્તંભ", c: "લોથલ સ્તંભ", d: "સાંચી સ્તંભ", correct: "b" },
+
+{ ch: 6, q: "ચાણક્ય કઈ વિદ્યાપીઠના આચાર્ય હતા?", a: "નાલંદા", b: "વલ્લભી", c: "તક્ષશિલા", d: "વિક્રમશિલા", correct: "c" },
+
+{ ch: 6, q: "મૌર્ય સામ્રાજ્યમાં ગુપ્તચર વિભાગના વડાને શું કહેવાતું?", a: "મહામાત્ય", b: "સન્નિધાતા", c: "સમાહર્તા", d: "ગૂઢપુરુષ", correct: "d" },
+
+{ ch: 6, q: "ચંદ્રગુપ્ત મૌર્યએ સૌરાષ્ટ્રમાં કોને રાષ્ટ્રીય તરીકે નિમ્યા હતા?", a: "તુષાસ્પ", b: "પુષ્યગુપ્ત", c: "ચક્રપાલિત", d: "સુવિશાખ", correct: "b" },
+
+{ ch: 6, q: "અશોકે કયા દેશમાં બૌદ્ધ પ્રતિનિધિ મંડળ મોકલ્યું ન હતું?", a: "સીરિયા", b: "ઇજિપ્ત", c: "મેસેડોનિયા", d: "બ્રાઝિલ", correct: "d" },
+
+{ ch: 6, q: "કલિંગના યુદ્ધમાં આશરે કેટલા લોકો કેદી બન્યા હતા?", a: "50 હજાર", b: "1 લાખ", c: "દોઢ લાખ", d: "બે લાખ", correct: "c" },
+
+{ ch: 6, q: "અશોકે બૌદ્ધ ધર્મના કયા સંપ્રદાયનો પ્રચાર કર્યો હતો?", a: "હીનયાન", b: "મહાયાન", c: "વજ્રયાન", d: "થેરાવાદ", correct: "d" },
+
+{ ch: 6, q: "ચંદ્રગુપ્તે કયા વર્ષમાં મૌર્ય સામ્રાજ્યની સ્થાપના કરી હતી?", a: "ઈ.સ. પૂર્વે 321", b: "ઈ.સ. પૂર્વે 261", c: "ઈ.સ. પૂર્વે 298", d: "ઈ.સ. 321", correct: "a" },
+
+{ ch: 6, q: "મૌર્ય સામ્રાજ્યના વહીવટીતંત્રમાં જિલ્લાને શું કહેવામાં આવતું?", a: "આહાર", b: "વિષય", c: "પ્રદેશ", d: "સ્થાનિક", correct: "a" },
+
+{ ch: 6, q: "અશોકના શિલાલેખો કઈ ભાષામાં લખાયેલા છે?", a: "સંસ્કૃત", b: "પ્રાકૃત", c: "પાલિ", d: "હિન્દી", correct: "b" },
+
+{ ch: 6, q: "ચંદ્રગુપ્ત મૌર્યના અવસાન પછી મગધની ગાદી પર કોણ આવ્યું?", a: "અશોક", b: "બિંદુસાર", c: "બૃહદ્રથ", d: "કુણાલ", correct: "b" },
+{ ch: 7, q: "ગુપ્ત વંશના કયા શાસકે સૌપ્રથમ 'મહારાજાધિરાજ' જેવું ભવ્ય બિરુદ ધારણ કર્યું હતું?", a: "શ્રીગુપ્ત", b: "ચંદ્રગુપ્ત પ્રથમ", c: "સમુદ્રગુપ્ત", d: "ઘટોત્કચ ગુપ્ત", correct: "b" },
+{ ch: 7, q: "પ્રયાગ પ્રશસ્તિની રચના કરનાર રાજકવિ હરિષેણ કોના દરબારમાં હતા?", a: "ચંદ્રગુપ્ત બીજો", b: "કુમારગુપ્ત", c: "સમુદ્રગુપ્ત", d: "સ્કંદગુપ્ત", correct: "c" },
+{ ch: 6, q: "ચંદ્રગુપ્ત બીજાએ કયા શક્તિશાળી રાજ્ય સાથે લગ્નસંબંધો બાંધી પોતાનું સૈન્યબળ વધાર્યું હતું?", a: "લિચ્છવી", b: "મગધ", c: "નાગવંશ", d: "વાકાટક", correct: "c" },
+{ ch: 7, q: "કયા ગુપ્ત શાસકના સમયમાં ગ્રીક રાજદૂત ફાહિયાન ભારતની મુલાકાતે આવ્યો હતો?", a: "ચંદ્રગુપ્ત પ્રથમ", b: "સમુદ્રગુપ્ત", c: "ચંદ્રગુપ્ત બીજો", d: "કુમારગુપ્ત પ્રથમ", correct: "c" },
+{ ch: 7, q: "ગુપ્ત યુગમાં કયા અધિકારીને 'મહાપ્રતિહાર' તરીકે ઓળખવામાં આવતા?", a: "ન્યાયાધીશ", b: "મહેલ અને દ્વારના રક્ષક", c: "સેનાપતિ", d: "વિદેશ મંત્રી", correct: "b" },
+{ ch: 7, q: "સમુદ્રગુપ્તે દક્ષિણ ભારતના કેટલા રાજાઓને હરાવીને તેમને ફરીથી સ્થાપિત કર્યા હતા?", a: "9", b: "10", c: "12", d: "15", correct: "c" },
+{ ch: 7, q: "ગુપ્ત સામ્રાજ્યમાં વહીવટી એકમ 'ભુક્તિ' ના વડાને શું કહેવામાં આવતું?", a: "ઉપરિક", b: "કુમારામાત્ય", d: "આયુક્ત", d: "વિષયપતિ", correct: "a" },
+{ ch: 7, q: "કયા ગુપ્ત રાજાના સિક્કા પર તેને વીણા વગાડતો દર્શાવવામાં આવ્યો છે?", a: "ચંદ્રગુપ્ત મૌર્ય", b: "સમુદ્રગુપ્ત", c: "કુમારગુપ્ત પ્રથમ", d: "સ્કંદગુપ્ત", correct: "b" },
+{ ch: 7, q: "ચંદ્રગુપ્ત બીજાએ 'શકારિ' બિરુદ કયા વિજયની યાદમાં ધારણ કર્યું હતું?", a: "હૂણ વિજય", b: "શક વિજય", c: "કુષાણ વિજય", d: "પલ્લવ વિજય", correct: "b" },
+{ ch: 7, q: "ગુપ્ત યુગના કયા વૈજ્ઞાનિકે પૃથ્વી પોતાની ધરી પર ફરે છે તે સાબિત કર્યું હતું?", a: "વરાહમિહિર", b: "બ્રહ્મગુપ્ત", c: "આર્યભટ્ટ", d: "વાગ્ભટ્ટ", correct: "c" },
+{ ch: 7, q: "પ્રસિદ્ધ નાલંદા વિદ્યાપીઠની સ્થાપના કયા ગુપ્ત શાસકના સમયમાં થઈ હતી?", a: "કુમારગુપ્ત પ્રથમ", b: "સ્કંદગુપ્ત", c: "બુધગુપ્ત", d: "નરસિંહગુપ્ત", correct: "a" },
+{ ch: 7, q: "ગુપ્ત વંશનો છેલ્લો મહાન સમ્રાટ કોણ ગણાય છે?", a: "કુમારગુપ્ત", b: "સ્કંદગુપ્ત", c: "વિષ્ણુગુપ્ત", d: "ભાનુગુપ્ત", correct: "b" },
+{ ch: 7, q: "ચંદ્રગુપ્ત બીજાના નવરત્નોમાં 'અમરકોષ' ના રચયિતા કોણ હતા?", a: "વરાહમિહિર", b: "ધન્વંતરિ", c: "અમરસિંહ", d: "કાલિદાસ", correct: "c" },
+{ ch: 7, q: "ગુપ્ત યુગમાં રાજ્યની આવકનો મુખ્ય સ્ત્રોત જમીન મહેસૂલ પેટે કેટલો ભાગ લેવાતો?", a: "ચોથો ભાગ", b: "છઠ્ઠો ભાગ", c: "આઠમો ભાગ", d: "ત્રીજો ભાગ", correct: "b" },
+{ ch: 7, q: "કાલિદાસના કયા મહાકાવ્યમાં કુમારના જન્મની કથા છે?", a: "મેઘદૂતમ્", b: "રઘુવંશમ્", c: "કુમારસંભવમ્", d: "અભિજ્ઞાનશાકુંતલમ્", correct: "c" },
+{ ch: 7, q: "ગુપ્ત યુગમાં કયું શહેર આંતરરાષ્ટ્રીય વેપાર માટેનું મોટું બંદર હતું?", a: "ભરૂચ", b: "ખંભાત", c: "તામ્રલિપ્તિ", d: "સુરત", correct: "c" },
+{ ch: 7, q: "દિલ્હી પાસે આવેલો 'મહેરૌલી લોહસ્તંભ' કયા રાજાએ બંધાવ્યો હોવાનું મનાય છે?", a: "ચંદ્રગુપ્ત પ્રથમ", b: "સમુદ્રગુપ્ત", c: "ચંદ્રગુપ્ત બીજો", d: "કુમારગુપ્ત", correct: "c" },
+{ ch: 7, q: "હર્ષવર્ધનના સમયમાં ચીની પ્રવાસી હ્યુ-એન-ત્સાંગે કઈ વિદ્યાપીઠમાં અભ્યાસ કર્યો હતો?", a: "તક્ષશિલા", b: "વલ્લભી", c: "નાલંદા", d: "વિક્રમશિલા", correct: "c" },
+{ ch: 7, q: "હર્ષવર્ધનને દક્ષિણના કયા શક્તિશાળી રાજાએ નર્મદાના કિનારે હરાવ્યો હતો?", a: "પુલકેશી પ્રથમ", b: "પુલકેશી બીજો", c: "કીર્તિવર્મન", d: "મંગલેશ", correct: "b" },
+{ ch: 6, q: "વાતાપીના ચાલુક્ય વંશનો સૌથી પ્રતાપી રાજા કોણ હતો?", a: "જયસિંહ", b: "પુલકેશી બીજો", c: "પુલકેશી પ્રથમ", d: "વિક્રમાદિત્ય", correct: "b" },
+{ ch: 7, q: "કાંચીપુરમના પલ્લવ વંશના કયા શાસકે મહાબલીપુરમના રથ મંદિરો બંધાવ્યા હતા?", a: "મહેન્દ્રવર્મન પ્રથમ", b: "નરસિંહવર્મન પ્રથમ", c: "રાજસિંહ", d: "પરમેશ્વરવર્મન", correct: "b" },
+{ ch: 7, q: "ગુપ્ત યુગમાં દક્ષિણ ભારતમાં કયો પ્રદેશ મરી-મસાલાના વેપાર માટે જાણીતો હતો?", a: "કેરળ", b: "મલબાર", c: "ચોલમંડળ", d: "કોંકણ", correct: "b" },
+{ ch: 7, q: "ગુપ્ત સામ્રાજ્યના પતન માટે કઈ પ્રજાના આક્રમણો જવાબદાર હતા?", a: "કુષાણ", b: "હૂણ", c: "શક", d: "ગ્રીક", correct: "b" },
+{ ch: 7, q: "ચંદ્રગુપ્ત બીજાના દરબારમાં આયુર્વેદના વિદ્વાન કોણ હતા?", a: "વાગ્ભટ્ટ", b: "ચરક", c: "ધન્વંતરિ", d: "સુશ્રુત", correct: "c" },
+{ ch: 7, q: "હર્ષવર્ધને દર પાંચ વર્ષે કયા સ્થળે ધર્મ પરિષદ અને દાન મહોત્સવ યોજતા?", a: "કનૌજ", b: "થાણેશ્વર", c: "પ્રયાગ", d: "મથુરા", correct: "c" },
+{ ch: 7, q: "કયા ગુપ્ત શાસકે અશ્વમેધ યજ્ઞ કર્યો હોવાનો પુરાવો સિક્કાઓ દ્વારા મળે છે?", a: "ચંદ્રગુપ્ત પ્રથમ", b: "સમુદ્રગુપ્ત", c: "સ્કંદગુપ્ત", d: "કુમારગુપ્ત", correct: "b" },
+{ ch: 7, q: "ગુપ્ત યુગમાં જમીનની માપણી કરનાર અધિકારીને શું કહેવામાં આવતું?", a: "સીતાધ્યક્ષ", b: "અક્ષપટલાધિકૃત", c: "પ્રમાતા", d: "ન્યાયકરણી", correct: "c" },
+{ ch: 7, q: "હર્ષચરિતના લેખક બાણભટ્ટ કોના રાજકવિ હતા?", a: "પુલકેશી બીજો", b: "હર્ષવર્ધન", c: "મહેન્દ્રવર્મન", d: "શશાંક", correct: "b" },
+{ ch: 7, q: "ગુપ્ત યુગની કઈ સ્થાપત્ય શૈલીમાં મંદિરો પથ્થરના શિખરવાળા બનાવવામાં આવતા?", a: "દ્રવિડ શૈલી", b: "નાગર શૈલી", c: "વેસર શૈલી", d: "ગાંધાર શૈલી", correct: "b" },
+{ ch: 7, q: "કયા પુરાણમાં ગુપ્ત વંશની વંશાવલી વિશે માહિતી મળે છે?", a: "મત્સ્ય પુરાણ", b: "વાયુ પુરાણ", c: "ગરૂડ પુરાણ", d: "ભાગવત પુરાણ", correct: "b" },
+{ ch: 7, q: "ચંદ્રગુપ્ત પ્રથમના લગ્ન કયા વંશની કન્યા કુમારદેવી સાથે થયા હતા?", a: "લિચ્છવી", b: "મૌર્ય", c: "કુષાણ", d: "શક", correct: "a" },
+{ ch: 7, q: "ગુપ્ત યુગમાં સોનાના સિક્કાઓને કયા નામે ઓળખવામાં આવતા?", a: "દ્રમ્મ", b: "દિનાર", c: "પર્ણ", d: "રૂપક", correct: "b" },
+{ ch: 7, q: "પુલકેશી બીજાએ હર્ષવર્ધનને હરાવીને કયું બિરુદ ધારણ કર્યું હતું?", a: "મહારાજાધિરાજ", b: "પરમેશ્વર", c: "દક્ષિણાપથેશ્વર", d: "સકલૌત્તરાપથનાથ", correct: "c" },
+{ ch: 7, q: "ગુપ્ત વંશના શાસનમાં 'વિષય' એટલે શું?", a: "રાજ્ય", b: "ગામ", c: "જિલ્લો", d: "નગર", correct: "c" },
+{ ch: 7, q: "કાંચીના પલ્લવોની રાજધાની કઈ હતી?", a: "તંજાવુર", b: "મદુરાઈ", c: "કાંચીપુરમ", d: "બાદામી", correct: "c" },
+{ ch: 7, q: "ગુપ્ત યુગમાં કયો ધર્મ રાજધર્મ તરીકે સ્થાપિત થયો હતો?", a: "બૌદ્ધ ધર્મ", b: "જૈન ધર્મ", c: "વૈષ્ણવ ધર્મ", d: "શૈવ ધર્મ", correct: "c" },
+{ ch: 7, q: "હર્ષવર્ધનના ભાઈનું નામ શું હતું?", a: "રાજ્યવર્ધન", b: "વિષ્ણુવર્ધન", c: "યશોવર્મન", d: "શશાંક", correct: "a" },
+{ ch: 7, q: "ગુપ્ત યુગમાં અષ્ટાંગહૃદય નામના તબીબી ગ્રંથની રચના કોણે કરી હતી?", a: "ચરક", b: "વાગ્ભટ્ટ", c: "સુશ્રુત", d: "આર્યભટ્ટ", correct: "b" },
+{ ch: 7, q: "સમુદ્રગુપ્ત પછી મગધની ગાદી પર કોણ આવ્યું હતું?", a: "સ્કંદગુપ્ત", b: "ચંદ્રગુપ્ત બીજો", c: "રામગુપ્ત", d: "કુમારગુપ્ત", correct: "c" },
+{ ch: 7, q: "દક્ષિણ ભારતમાં મહામલ્લપુરમ (મહાબલીપુરમ) શહેરની સ્થાપના કોણે કરી હતી?", a: "પુલકેશી બીજો", b: "નરસિંહવર્મન પ્રથમ", c: "હર્ષવર્ધન", d: "રાજેન્દ્ર ચોલ", correct: "b" },
+{ ch: 7, q: "ગુપ્ત યુગમાં ગણિતશાસ્ત્રમાં 'શૂન્ય' ની શોધ કોણે કરી હતી?", a: "બ્રહ્મગુપ્ત", b: "ભાસ્કરાચાર્ય", c: "આર્યભટ્ટ", d: "વરાહમિહિર", correct: "c" },
+{ ch: 7, q: "હર્ષવર્ધને પોતાની રાજધાની થાણેશ્વરથી ક્યાં ખસેડી હતી?", a: "પાટલીપુત્ર", b: "ઉજ્જૈન", c: "કનૌજ", d: "મથુરા", correct: "c" },
+{ ch: 7, q: "પલ્લવ વંશનો પ્રથમ શક્તિશાળી શાસક કોણ હતો?", a: "સિમ્હ વિષ્ણુ", b: "મહેન્દ્રવર્મન", c: "નરસિંહવર્મન", d: "દંતિદુર્ગ", correct: "a" },
+{ ch: 7, q: "ચંદ્રગુપ્ત બીજાના સમયમાં કયું સ્થળ વિદ્યાનું મોટું કેન્દ્ર હતું?", a: "કાશી", b: "પાટલીપુત્ર", c: "ઉજ્જૈન", d: "તક્ષશિલા", correct: "c" },
+{ ch: 7, q: "ગુપ્ત સામ્રાજ્યમાં વિદેશ મંત્રીને કયા નામે ઓળખવામાં આવતા?", a: "મહાસંધિવિગ્રહક", b: "મહાદંડનાયક", c: "મહાક્ષપટલિક", d: "મહાઅશ્વપતિ", correct: "a" },
+{ ch: 7, q: "હર્ષવર્ધન કયા ધર્મના મહાન અનુયાયી હતા?", a: "શૈવ ધર્મ", b: "બૌદ્ધ ધર્મ", c: "જૈન ધર્મ", d: "વૈષ્ણવ ધર્મ", correct: "b" },
+{ ch: 7, q: "ગુપ્ત યુગમાં કયા રાજાને 'કવિરાજ' નું બિરુદ મળ્યું હતું?", a: "ચંદ્રગુપ્ત બીજો", b: "સમુદ્રગુપ્ત", c: "સ્કંદગુપ્ત", d: "કુમારગુપ્ત પ્રથમ", correct: "b" },
+{ ch: 7, q: "ગુપ્ત યુગમાં ગુજરાતમાં કયું જાણીતું બંદર પશ્ચિમ જગત સાથે વેપાર કરતું હતું?", a: "ભરૂચ", b: "ઘોઘા", c: "લોથલ", d: "દ્વારકા", correct: "a" },
+{ ch: 7, q: "પુલકેશી બીજાએ કયા સમુદ્રના સ્વામી તરીકે ઓળખવામાં આવતા?", a: "હિંદ મહાસાગર", b: "અરબી સમુદ્ર", c: "બંગાળની ખાડી", d: "ત્રણ સમુદ્રના અધિપતિ", correct: "d" },
+{ ch: 7, q: "ગુપ્ત વંશના કયા શાસકે હૂણોને હરાવીને ભારતનું રક્ષણ કર્યું હતું?", a: "ચંદ્રગુપ્ત બીજો", b: "સ્કંદગુપ્ત", c: "કુમારગુપ્ત", d: "સમુદ્રગુપ્ત", correct: "b" },
+{ ch: 8, q: "ભારતમાં લોખંડનો ઉપયોગ આશરે કેટલા વર્ષ પહેલાં શરૂ થયો હોવાનું મનાય છે?", a: "2000 વર્ષ", b: "2500 વર્ષ", c: "3000 વર્ષ", d: "3500 વર્ષ", correct: "c" },
+{ ch: 8, q: "પ્રાચીન ભારતમાં ખેતી માટેના સાધનોમાં કુહાડીનો ઉપયોગ શાના માટે થતો હતો?", a: "જમીન ખોદવા", b: "ઘાસ કાપવા", c: "જંગલો સાફ કરવા", d: "અનાજ લણવા", correct: "c" },
+{ ch: 8, q: "ગામ-ભોજક તરીકે ઓળખાતું પદ પ્રાચીન ભારતના કયા ભાગમાં જોવા મળતું હતું?", a: "દક્ષિણ ભારત", b: "ઉત્તર ભારત", c: "પશ્ચિમ ભારત", d: "પૂર્વી ભારત", correct: "b" },
+{ ch: 8, q: "દક્ષિણ ભારતમાં મોટા જમીનદારોને કયા નામે ઓળખવામાં આવતા હતા?", a: "ઉઝવર", b: "વેલ્લલર", c: "કડેસિયાર", d: "અદિમઈ", correct: "b" },
+{ ch: 8, q: "સંગમ સાહિત્યની રચના કયા શહેરમાં આયોજિત સભાઓમાં થઈ હતી?", a: "કાંચી", b: "મદુરાઈ", c: "પુહાર", d: "તંજાવુર", correct: "b" },
+{ ch: 8, q: "ભારતના સૌથી પ્રાચીન સિક્કા તરીકે કયા સિક્કા ઓળખાય છે?", a: "ઇન્ડો-ગ્રીક સિક્કા", b: "કુષાણ સિક્કા", c: "પંચમાર્ક સિક્કા", d: "ગુપ્તકાલીન સિક્કા", correct: "c" },
+{ ch: 8, q: "પ્રાચીન સમયમાં મગધની રાજધાની કઈ હતી જે પાછળથી પાટલીપુત્ર બની?", a: "વૈશાલી", b: "રાજગૃહ", c: "કાશી", d: "અંગ", correct: "b" },
+{ ch: 8, q: "ગ્રીક નાવિક ટોલેમીએ ભારતના કયા બંદરનો ઉલ્લેખ પોતાના પુસ્તકમાં કર્યો છે?", a: "ભરૂચ (બેરિગાઝા)", b: "ખંભાત (સ્તંભતીર્થ)", c: "મુઝિરીસ", d: "તામ્રલિપ્તિ", correct: "a" },
+{ ch: 8, q: "બૌદ્ધ ધર્મના કયા ગ્રંથમાં 16 જેટલા મહાજનપદોનો ઉલ્લેખ જોવા મળે છે?", a: "વિનયપિટક", b: "સુત્તપિટક", c: "અંગુત્તરનિકાય", d: "મિલીન્દપન્હો", correct: "c" },
+{ ch: 8, q: "પ્રાચીન ભારતમાં મથુરા કયા ક્ષેત્રની રાજધાની તરીકે જાણીતું હતું?", a: "મગધ", b: "પાંચાલ", c: "શૂરસેન", d: "અવંતી", correct: "c" },
+{ ch: 8, q: "શિલ્પશાસ્ત્રના પ્રણેતા તરીકે કયા દેવને માનવામાં આવે છે?", a: "ઈન્દ્ર", b: "વરુણ", c: "વિશ્વકર્મા", d: "અગ્નિ", correct: "c" },
+{ ch: 8, q: "ભારતમાં ગાંધાર કલાશૈલી કઈ બે કલાઓનું મિશ્રણ છે?", a: "ભારતીય અને ઈરાની", b: "ભારતીય અને ગ્રીક", c: "ભારતીય અને રોમન", d: "ભારતીય અને ચીની", correct: "b" },
+{ ch: 8, q: "સ્તૂપના મધ્યમાં જે નળાકાર ભાગ હોય છે તેને શું કહેવામાં આવે છે?", a: "હર્મિકા", b: "મેધિ", c: "અંડ", d: "વેદિકા", correct: "c" },
+{ ch: 8, q: "સાંચીનો સ્તૂપ કયા રાજ્યમાં આવેલો છે?", a: "બિહાર", b: "ઉત્તર પ્રદેશ", c: "મધ્ય પ્રદેશ", d: "ગુજરાત", correct: "c" },
+{ ch: 8, q: "કયા શાસકે સાંચીના સ્તૂપની આસપાસ કાષ્ઠની વેદિકા કરાવી હતી?", a: "અશોક", b: "પુષ્યમિત્ર શૃંગ", c: "ચંદ્રગુપ્ત મૌર્ય", d: "કનિષ્ક", correct: "b" },
+{ ch: 8, q: "પ્રાચીન ભારતની કઈ વિદ્યાપીઠ બૌદ્ધ ધર્મના હીનયાન પંથનું મુખ્ય કેન્દ્ર હતી?", a: "નાલંદા", b: "વલ્લભી", c: "તક્ષશિલા", d: "વિક્રમશિલા", correct: "b" },
+{ ch: 8, q: "ચંદ્રગુપ્ત મૌર્યના સમયમાં કયો ગ્રીક રાજદૂત ભારત આવ્યો હતો?", a: "ફાહિયાન", b: "હ્યુ-એન-ત્સાંગ", c: "મેગેસ્થનીઝ", d: "ઈતસિંગ", correct: "c" },
+{ ch: 8, q: "કયા પુરાણમાં જનપદો અને મહાજનપદોની યાદી મળે છે?", a: "શિવ પુરાણ", b: "વાયુ પુરાણ", c: "મત્સ્ય પુરાણ", d: "વિષ્ણુ પુરાણ", correct: "b" },
+{ ch: 8, q: "ભારતીય સાહિત્યમાં 'વેદાંગ' ની સંખ્યા કેટલી છે?", a: "4", b: "6", c: "8", d: "10", correct: "b" },
+{ ch: 8, q: "પ્રાચીન ભારતમાં 'નાગર' કયા પ્રકારના રહેવાસીઓને કહેવામાં આવતા?", a: "ગામડાના", b: "શહેરના", c: "જંગલના", d: "દરિયા કિનારાના", correct: "b" },
+{ ch: 8, q: "બૌદ્ધ ધર્મના પવિત્ર ગ્રંથોને શું કહેવામાં આવે છે?", a: "આગમ", b: "ત્રિપિટક", c: "ઉપનિષદ", d: "પુરાણ", correct: "b" },
+{ ch: 8, q: "દક્ષિણ ભારતમાં સાહિત્યિક સભાઓ કયા નામે ઓળખાતી?", a: "પરિષદ", b: "સંગમ", c: "મહાસભા", d: "ચોપાલ", correct: "b" },
+{ ch: 8, q: "કઈ કલાશૈલી સંપૂર્ણપણે ભારતીય છે?", a: "ગાંધાર કલા", b: "મથુરા કલા", c: "ગ્રીક કલા", d: "રોમન કલા", correct: "b" },
+{ ch: 8, q: "કયા બંદરેથી રોમ સાથે મોટાપાયે વેપાર થતો હોવાના પુરાવા મળ્યા છે?", a: "અરિકામેડુ", b: "તામ્રલિપ્તિ", c: "લોથલ", d: "સોપારા", correct: "a" },
+{ ch: 8, q: "ભારતમાં બનેલું રેશમી કાપડ યુરોપમાં કયા નામે ઓળખાતું?", a: "મલમલ", b: "ચીનાશુક્ર", c: "ક્ષૌમ", d: "દુકુલ", correct: "b" },
+{ ch: 8, q: "પ્રાચીન કાળમાં ગાંધાર પ્રદેશ કઈ વિદ્યાપીઠ માટે જાણીતો હતો?", a: "નાલંદા", b: "તક્ષશિલા", c: "વિક્રમશિલા", d: "કાંચી", correct: "b" },
+{ ch: 8, q: "જૈન ધર્મના પ્રાચીન સાહિત્યને શું કહેવામાં આવે છે?", a: "ત્રિપિટક", b: "આગમ ગ્રંથો", c: "જાતક કથાઓ", d: "પુરાણો", correct: "b" },
+{ ch: 8, q: "મિલિન્દપન્હો ગ્રંથમાં કયા રાજા અને બૌદ્ધ સાધુ વચ્ચેનો સંવાદ છે?", a: "અશોક-ઉપગુપ્ત", b: "મેનાન્ડર-નાગસેન", c: "કનિષ્ક-અશ્વઘોષ", d: "ચંદ્રગુપ્ત-ચાણક્ય", correct: "b" },
+{ ch: 8, q: "નાલંદા વિદ્યાપીઠના ભવ્ય પુસ્તકાલયનું નામ શું હતું?", a: "ધર્મગંજ", b: "રત્નસાગર", c: "જ્ઞાનભંડાર", d: "શિક્ષાધામ", correct: "a" },
+{ ch: 8, q: "પેરિપ્લસ ઓફ ધ એરિથ્રિયન સી પુસ્તકનો લેખક કોણ છે?", a: "ટોલેમી", b: "પ્લિની", c: "અજ્ઞાત ગ્રીક નાવિક", d: "મેગેસ્થનીઝ", correct: "c" },
+{ ch: 8, q: "પ્રાચીન ભારતમાં સુતરાઉ કાપડ તૈયાર કરવાની કળામાં કયું શહેર મોખરે હતું?", a: "પાટલીપુત્ર", b: "વારાણસી (કાશી)", c: "મથુરા", d: "કાંચી", correct: "b" },
+{ ch: 8, q: "સ્તૂપની ચારેબાજુ આવવા-જવા માટે જે રસ્તો હોય છે તેને શું કહેવાય?", a: "હર્મિકા", b: "પ્રદક્ષિણા પથ", c: "તોરણ", d: "વેદિકા", correct: "b" },
+{ ch: 8, q: "કયા સ્તૂપને ભારતનો સૌથી શ્રેષ્ઠ સ્તૂપ માનવામાં આવે છે?", a: "ભરહુતનો સ્તૂપ", b: "સાંચીનો સ્તૂપ", c: "અમરાવતીનો સ્તૂપ", d: "સારનાથનો સ્તૂપ", correct: "b" },
+{ ch: 8, q: "ગુજરાતની કઈ વિદ્યાપીઠ વિશ્વપ્રસિદ્ધ હતી અને ચીની પ્રવાસીઓએ તેની મુલાકાત લીધી હતી?", a: "નાલંદા", b: "વલ્લભી", c: "વિક્રમશિલા", d: "ઓદંતપુરી", correct: "b" },
+{ ch: 8, q: "ભારતની પ્રાચીન કલામાં જે ધર્મ સાથે જોડાયેલી નથી તેને શું કહેવાય?", a: "ધાર્મિક કલા", b: "ધર્મેતર કલા", c: "લૌકિક કલા", d: "આધુનિક કલા", correct: "b" },
+{ ch: 8, q: "કયા શાસકના સમયમાં મથુરા કલાશૈલીનો ખૂબ વિકાસ થયો હતો?", a: "મૌર્ય", b: "કુષાણ", c: "ગુપ્ત", d: "ચાલુક્ય", correct: "b" },
+{ ch: 8, q: "પ્રાચીન ભારતમાં સંગમ સાહિત્યની કુલ કેટલી સભાઓ (સંગમ) ભરાઈ હતી?", a: "બે", b: "ત્રણ", c: "ચાર", d: "પાંચ", correct: "b" },
+{ ch: 8, q: "અજંતાની ગુફાઓ કયા રાજ્યમાં આવેલી છે?", a: "ગુજરાત", b: "મહારાષ્ટ્ર", c: "મધ્ય પ્રદેશ", d: "રાજસ્થાન", correct: "b" },
+{ ch: 8, q: "કયા ચીની મુસાફરે વલ્લભી વિદ્યાપીઠની મુલાકાત લીધી હતી?", a: "ફાહિયાન", b: "ઈતસિંગ", c: "હ્યુ-એન-ત્સાંગ", d: "માર્કો પોલો", correct: "b" },
+{ ch: 8, q: "દક્ષિણ ભારતમાં જમીનવિહોણા ખેત મજૂરોને શું કહેવામાં આવતું?", a: "વેલ્લલર", b: "કડેસિયાર", d: "ઉઝવર", d: "ગ્રામભોજક", correct: "b" },
+{ ch: 8, q: "ભારતમાંથી નિકાસ થતી કઈ વસ્તુની રોમમાં ખૂબ માંગ હતી?", a: "સોનું", b: "મરી-મસાલા", c: "દારૂ", d: "ઘોડા", correct: "b" },
+{ ch: 8, q: "ચૈત્યોનો મુખ્ય ઉપયોગ શું હતો?", a: "રહેવા માટે", b: "પ્રાર્થના અને ઉપાસના માટે", c: "ભોજન માટે", d: "અભ્યાસ માટે", correct: "b" },
+{ ch: 8, q: "વિહાર એટલે શું?", a: "બૌદ્ધ સાધુઓનું પ્રાર્થના સ્થળ", b: "બૌદ્ધ સાધુઓનું નિવાસ સ્થાન", c: "બૌદ્ધ સાધુઓનું સ્નાનાગાર", d: "બૌદ્ધ સાધુઓનું રસોડું", correct: "b" },
+{ ch: 8, q: "ભારતનો કયો ભાગ 'સુવર્ણદ્વીપ' તરીકે ઓળખાતા દેશો સાથે વેપાર કરતો હતો?", a: "પશ્ચિમ ભારત", b: "પૂર્વી ભારત", c: "ઉત્તર ભારત", d: "મધ્ય ભારત", correct: "b" },
+{ ch: 8, q: "પ્રાચીન ભારતની ચિત્રકલાના ઉત્કૃષ્ટ નમૂના કઈ ગુફામાં જોવા મળે છે?", a: "ભીમબેટકા", b: "અજંતા-ઈલોરા", c: "એલિફન્ટા", d: "કાર્લે", correct: "b" },
+{ ch: 8, q: "હિંદુ ધર્મના સાહિત્યમાં 'પુરાણો' ની સંખ્યા કેટલી છે?", a: "12", b: "18", c: "24", d: "108", correct: "b" },
+{ ch: 8, q: "કયા મહાકાવ્યને 'જય સંહિતા' તરીકે પણ ઓળખવામાં આવે છે?", a: "રામાયણ", b: "મહાભારત", c: "રઘુવંશ", d: "મેઘદૂત", correct: "b" },
+{ ch: 8, q: "દુનિયાનું સૌથી મોટું મહાકાવ્ય કયું છે?", a: "રામાયણ", b: "મહાભારત", c: "ઇલિયડ", d: "ઓડિસી", correct: "b" },
+{ ch: 8, q: "ઉપનિષદોમાં કયા વિષયની ચર્ચા કરવામાં આવી છે?", a: "રાજનીતિ", b: "બ્રહ્માંડ અને આત્મા-પરમાત્મા", c: "યુદ્ધ કૌશલ્ય", d: "ખેતી પદ્ધતિ", correct: "b" },
+{ ch: 8, q: "ભારતની પ્રાચીન સંસ્કૃતિને વિશ્વમાં કયા નામે ઓળખવામાં આવે છે?", a: "ગંગા સંસ્કૃતિ", b: "સિંધુ ખીણની સંસ્કૃતિ", c: "હિંદુ સંસ્કૃતિ", d: "આર્ય સંસ્કૃતિ", correct: "b" }
+// ... અહિયાં તમારા અન્ય બધા પ્રશ્નો ઉમેરી શકાય
+];
+
+let questions = [], currentIdx = 0, score = 0, timer = 30, timerId, studentData = {};
+
+function startGame() {
+    const name = document.getElementById('studentName').value;
+    const roll = document.getElementById('rollNo').value;
+    const ch = document.getElementById('chapter').value;
+    if(!name || !roll) return alert("નામ અને રોલ નંબર લખો!");
+
+    studentData = { name, roll, chapter: ch };
+    questions = ch === "all" ? [...questionBank] : questionBank.filter(q => q.ch == ch);
+    questions = questions.sort(() => Math.random() - 0.5).slice(0, 50);
+
+    document.getElementById('ui-layer').style.display = 'none';
+    document.getElementById('quiz-overlay').style.display = 'flex';
+    
+    initDots();
+    renderQuestion();
+}
+
+function initDots() {
+    const area = document.getElementById('dots-area');
+    area.innerHTML = '';
+    questions.forEach((_, i) => {
+        const d = document.createElement('div');
+        d.className = 'dot';
+        d.id = `dot-${i}`;
+        d.innerText = i + 1;
+        area.appendChild(d);
+    });
+}
+
+function renderQuestion() {
+    if(currentIdx >= questions.length) return endBatch();
+    
+    const q = questions[currentIdx];
+    document.getElementById('q-info').innerText = `પ્રશ્ન ${currentIdx + 1}/${questions.length}`;
+    document.getElementById('q-text').innerText = q.q;
+    ['a','b','c','d'].forEach(l => {
+        const btn = document.getElementById(`btn-${l}`);
+        btn.innerText = q[l];
+        btn.className = 'opt-btn';
+        btn.disabled = false;
+    });
+
+    document.querySelectorAll('.dot').forEach(d => d.classList.remove('current'));
+    document.getElementById(`dot-${currentIdx}`).classList.add('current');
+
+    timer = 30;
+    document.getElementById('timer-val').innerText = timer;
+    clearInterval(timerId);
+    timerId = setInterval(() => {
+        timer--;
+        document.getElementById('timer-val').innerText = timer;
+        if(timer <= 0) handleSelect(null);
+    }, 1000);
+}
+
+function handleSelect(ans) {
+    clearInterval(timerId);
+    const correct = questions[currentIdx].correct;
+    const btns = document.querySelectorAll('.opt-btn');
+    const currentDot = document.getElementById(`dot-${currentIdx}`);
+    
+    btns.forEach(b => b.disabled = true);
+
+    if(ans === correct) {
+        score++;
+        document.getElementById(`btn-${ans}`).classList.add('correct');
+        document.getElementById('sound-correct').play();
+        currentDot.classList.add('is-correct'); // સાચા માટે ગ્રીન
+    } else {
+        if(ans) document.getElementById(`btn-${ans}`).classList.add('wrong');
+        document.getElementById(`btn-${correct}`).classList.add('correct');
+        document.getElementById('sound-wrong').play();
+        currentDot.classList.add('is-wrong'); // ખોટા માટે રેડ
+    }
+
+    setTimeout(() => {
+        currentIdx++;
+        renderQuestion();
+    }, 2000);
+}
+
+function endBatch() {
+    saveToLocal();
+    alert(`ક્વિઝ પૂર્ણ!\nનામ: ${studentData.name}\nસ્કોર: ${score}/${questions.length}`);
+    location.reload();
+}
+
+function saveToLocal() {
+    let recs = JSON.parse(localStorage.getItem('pansada_records') || "[]");
+    recs.push({ ...studentData, score: score, total: questions.length, date: new Date().toLocaleString('gu-IN') });
+    localStorage.setItem('pansada_records', JSON.stringify(recs));
+}
+
+function showAdmin() { document.getElementById('admin-panel').style.display = 'flex'; }
+function hideAdmin() { document.getElementById('admin-panel').style.display = 'none'; }
+document.getElementById('adminPass').addEventListener('input', (e) => {
+    if(e.target.value === "admin123") {
+        document.getElementById('admin-actions').style.display = 'block';
+        let recs = JSON.parse(localStorage.getItem('pansada_records') || "[]");
+        document.getElementById('record-count').innerText = `કુલ ${recs.length} રેકોર્ડ સેવ છે.`;
+    }
+});
+
+function downloadData() {
+    let recs = JSON.parse(localStorage.getItem('pansada_records') || "[]");
+    if(!recs.length) return alert("ડેટા નથી!");
+    let csv = "\uFEFFરોલ,નામ,પાઠ,સ્કોર,તારીખ\n";
+    recs.forEach(r => csv += `${r.roll},${r.name},${r.chapter},${r.score}/${r.total},${r.date}\n`);
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "વિદ્યાર્થી_રિપોર્ટ.csv";
+    link.click();
+}
+
+function clearData() { if(confirm("બધો ડેટા સાફ કરવો છે?")) { localStorage.removeItem('pansada_records'); location.reload(); } }
+</script>
 </body>
 </html>
