@@ -590,11 +590,41 @@ function handleSelect(ans) {
         currentIdx++;
         renderQuestion();
     }, 2000);
-}
-
 function endBatch() {
+    // 1. લોકલ સ્ટોરેજમાં સેવ કરવા
     saveToLocal();
-    alert(`ક્વિઝ પૂર્ણ!\nનામ: ${studentData.name}\nસ્કોર: ${score}/${questions.length}`);
+
+    // 2. વિદ્યાર્થીની માહિતી બોક્સમાંથી લેવી
+    const currentName = document.getElementById('studentName').value;
+    const currentRoll = document.getElementById('rollNo').value;
+    const currentChapter = document.getElementById('chapter').value;
+
+    // 3. ગુગલ શીટની લિંક (અહીં તમારી પેલી લાંબી લિંક મૂકવી)
+    const scriptURL = " https://script.google.com/macros/s/AKfycbz2fE1SmLEY_koT1wYhB3Ga9y2uS5pfW4GR6SkbnKgz1BoeZW6uVoepIekAqTQ3Oh4zXg/exec";
+
+    // 4. ફાઈનલ સ્કોર માત્ર નંબર (આંકડા) તરીકે જ લેવો
+    const finalScoreNumber = Number(score);
+
+    // 5. ગુગલ શીટમાં મોકલવા માટે ડેટા તૈયાર કરવો
+    const sheetData = {
+        name: currentName,
+        roll: currentRoll,
+        chapter: currentChapter,
+        score: finalScoreNumber
+    };
+
+    // 6. ગુગલ શીટમાં ડેટા ઓનલાઇન મોકલવો
+    fetch(scriptURL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(sheetData)
+    });
+
+    // 7. તમારો જૂનો મેસેજ અને પેજ રિલોડ કરવાનો કોડ
+    alert(`ક્વિઝ પૂર્ણ!\nનામ: ${currentName}\nસ્કોર: ${score}/${questions.length}`);
     location.reload();
 }
 
